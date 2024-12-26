@@ -10,79 +10,12 @@ import AddEditJournalForm from './components/form/AddEditJournalForm';
 import Link from 'next/link';
 
 function Journals({ searchParams }) {
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
-
-  const toggleAddModal = () => {
-    setAddModalOpen(!isAddModalOpen);
-  };
-
-  const { palette: { primary: { main } } } = useTheme();
-
-  // List 
-
-  const journalSidebarLinks = [
-    {
-      id: 1,
-      title: 'Overview',
-      active: true,
-    },
-    {
-      id: 2,
-      title: 'Patients'
-    },
-    {
-      id: 3,
-      title: 'Users'
-    },
-    {
-      id: 4,
-      title: 'Notices'
-    },
-    {
-      id: 5,
-      title: 'Templates'
-    },
-    {
-      id: 6,
-      title: 'Log History'
-    },
-  ]
-
-  // common Stylings
-  const commonPaperStyles = {
-    borderRadius: '10px',
-  }
-
+ 
   return (
     <>
-      <Box className="flex gap-4">
-
-        <Paper sx={{ ...commonPaperStyles, minHeight: 'calc(100vh - 160px)', minWidth: '350px', padding: '20px 30px' }}>
-
-          <Typography variant='h4'>
-            Journal
-          </Typography>
-
-          <List sx={{ marginTop: 3 }}>
-            {
-              journalSidebarLinks.map(item => (
-                <ListItem key={item.id} sx={{ padding: '0px', marginTop: 1 }} >
-                  <Link href={'/'} style={{ ...(item?.active ? { backgroundColor: main, color: 'white' } : {}), width: '100%', padding: '10px', borderRadius: '10px' }}>
-                    <Typography variant='body1'>
-                      {item.title}
-                    </Typography>
-                  </Link>
-                </ListItem>
-              ))
-            }
-          </List>
-
-        </Paper>
-
-
         <Grid container spacing={2}>
           <Grid item xl={6} lg={6} md={6} sm={12}>
-            <Paper sx={{ borderRadius: '20px', padding: '20px 30px' }}>
+            <Paper sx={{ borderRadius: '20px', padding: '20px 30px', minHeight: 'calc(100vh - 160px)'  }}>
               <Typography variant='h5'>
                 Your latest journal drafts
               </Typography>
@@ -107,14 +40,14 @@ function Journals({ searchParams }) {
           <Grid item xl={6} lg={6} md={6} sm={12}>
             <Stack spacing={2}>
 
-            <Paper sx={{ borderRadius: '20px', padding: '20px 30px' }}>
+            <Paper sx={{ borderRadius: '20px', padding: '20px 30px' , minHeight: 'calc(50vh - 95px)' }}>
               <Typography variant='h5'>
                 Notices
               </Typography>
 
             </Paper>
 
-            <Paper sx={{ borderRadius: '20px', padding: '20px 30px' }}>
+            <Paper sx={{ borderRadius: '20px', padding: '20px 30px', minHeight: 'calc(50vh - 80px)' }}>
               <Typography variant='h5'>
                 Bookings
               </Typography>
@@ -124,21 +57,6 @@ function Journals({ searchParams }) {
           </Grid>
 
         </Grid>
-
-
-        {/* <Paper sx={{ ...commonPaperStyles }} className=" py-14 px-8">
-          <JournalsTable journalId={searchParams?.journalId} />
-          <Modal open={isAddModalOpen} onClose={toggleAddModal}>
-            <Box sx={{ ...formModalStyles, width: '900px' }}>
-              <ModalHeader title="Journal instance" onClose={toggleAddModal} />
-              <AddEditJournalForm toggleAddModal={toggleAddModal} />
-            </Box>
-          </Modal>
-        </Paper> */}
-
-
-
-      </Box>
     </>
   );
 }
