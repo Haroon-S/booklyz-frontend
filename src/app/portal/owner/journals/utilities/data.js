@@ -29,4 +29,20 @@ export const journalTableHeadCells = [
   }
 ];
 
+export const patientsTableHeadCells = [
+  {
+    id: 'name',
+    label: 'First Name',
+  },
+  {
+    id: 'surname',
+    label: 'Surname',
+  },
+  {
+    id: 'email',
+    label: 'Email',
+  },
+];
+
+
 export const test = '';

@@ -2,12 +2,7 @@
 
 import { Box, Button, Grid, List, ListItem, Modal, Paper, Stack, Typography, useTheme } from '@mui/material';
 import propTypes from 'prop-types';
-import React, { useState } from 'react';
-import JournalsTable from './components/JournalsTable';
-import { formModalStyles } from '@/styles/mui/common/modal-styles';
-import ModalHeader from '@/app/common/components/ModalHeader';
-import AddEditJournalForm from './components/form/AddEditJournalForm';
-import Link from 'next/link';
+import React from 'react';
 
 function Journals({ searchParams }) {
  
