@@ -29,6 +29,7 @@ import { patientsTableHeadCells } from '../../utilities/data';
 import PatientsTableHead from './PatientsTableHead';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useGetPatientsQuery } from '@/services/private/patients';
 
 function PatientsTable({
     pagination,
@@ -40,6 +41,9 @@ function PatientsTable({
     onSelectAllRows,
     journalId,
 }) {
+
+    const {data: patientsData} = useGetPatientsQuery();
+
     const router = useRouter();
 
     const [isModalOpen, setModalOpen] = useState(false);
@@ -74,16 +78,16 @@ function PatientsTable({
                         order={order}
                         orderBy={orderBy}
                         onRequestSort={onRequestSort}
-                        rowCount={data?.count || 0}
+                        rowCount={patientsData?.count || 0}
                         numSelected={selected?.length}
-                        onSelectAllRows={e => onSelectAllRows(e, data?.results)}
+                        onSelectAllRows={e => onSelectAllRows(e, patientsData?.results)}
                     />
 
                     {loading && <TableLoaders />}
 
-                    {!loading && data?.results?.length > 0 && (
+                    {!loading && patientsData?.results?.length > 0 && (
                         <TableBody>
-                            {data?.results?.map(item => {
+                            {patientsData?.results?.map(item => {
                                 const isItemSelected = isSelected(item?.id);
 
                                 return (
@@ -99,13 +103,13 @@ function PatientsTable({
                                         key={item?.id}
                                     >
                                         <TableCell>
-                                            <Typography variant="body1">{item?.name}</Typography>
+                                            <Typography variant="body1">{item?.first_name}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="body1">{'Surname'}</Typography>
+                                            <Typography variant="body1">{item?.last_name}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="body1">{item?.email}</Typography>
+                                            <Typography variant="body1">{item?.email || "--"}</Typography>
                                         </TableCell>
                                     </TableRow>
                                 );
@@ -117,7 +121,7 @@ function PatientsTable({
 
                 <TablePagination
                     component={Box}
-                    count={data?.results?.length || 0}
+                    count={patientsData?.count || 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     rowsPerPageOptions={[10, 20, 30]}
