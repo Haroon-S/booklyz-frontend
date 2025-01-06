@@ -10,7 +10,14 @@ export const usersApi = privateAPi.injectEndpoints({
       }),
       providesTags: ['GetUser'],
     }),
-
+    getUserLogsHistory: build.query({
+      query: params => ({
+        url: '/user/log-history/',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['GetUser'],
+    }),
     getUserById: build.query({
       query: slug => `/services/company/${slug}/`,
       providesTags: ['GetUserById'],
@@ -35,4 +42,4 @@ export const usersApi = privateAPi.injectEndpoints({
   }),
 });
 
-export const { useGetUserQuery, useAddUserMutation, useGetUserByIdQuery, useAddContactMutation } = usersApi;
+export const { useGetUserQuery, useAddUserMutation, useGetUserByIdQuery, useAddContactMutation, useGetUserLogsHistoryQuery } = usersApi;

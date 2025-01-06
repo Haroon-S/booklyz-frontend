@@ -4,6 +4,7 @@ import { useGetPatientsQuery } from '@/services/private/patients';
 import { useGetUserQuery } from '@/services/private/users';
 import { BadgeOutlined } from '@mui/icons-material'
 import { Box, Button, Grid, Stack, Typography } from '@mui/material'
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React from 'react'
 
@@ -13,7 +14,6 @@ const Overview = () => {
     const { data: userData } = useGetUserQuery({ user: id });
 
     const { social_security_number, email, mobile, user, address , username} = userData?.[0] || {};
-    console.log('userData ==> ', userData)
 
     return (
         <Grid container>
@@ -43,9 +43,11 @@ const Overview = () => {
                     <Button variant='contained' color='secondary'>
                         Show latest
                     </Button>
+                    <Link href={`/portal/owner/journals/patients/${id}/journal?tab=tab1`}>
                     <Button variant='contained' color='secondary'>
                         Create new
                     </Button>
+                    </Link>
                 </Box>
 
 
