@@ -23,8 +23,8 @@ const layout = ({ children }) => {
         },
         {
             id: 3,
-            link: '/portal/owner/journals/users',
-            title: 'Users',
+            link: '/portal/owner/journals/user',
+            title: 'User',
         },
         {
             id: 4,

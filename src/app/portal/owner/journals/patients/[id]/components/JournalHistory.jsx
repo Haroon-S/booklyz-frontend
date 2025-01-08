@@ -1,8 +1,14 @@
+'use client';
+
 import { CloudDownloadOutlined, EditOutlined, FeaturedPlayListOutlined, MoreHoriz } from '@mui/icons-material';
 import { Box, Button, Card, CardContent, Checkbox, Grid, Stack, Toolbar, Typography } from '@mui/material';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import React from 'react'
 
 const JournalHistory = () => {
+
+    const { id } = useParams();
 
     const data = [
         {
@@ -44,9 +50,11 @@ const JournalHistory = () => {
 
                 <Box display={'flex'} gap={2}>
 
-                    <Button variant='contained'>
-                        New journal entry
-                    </Button>
+                    <Link href={`/portal/owner/journals/patients/${id}/journal?tab=tab1`}>
+                        <Button variant='contained'>
+                            New journal entry
+                        </Button>
+                    </Link>
 
                     <Button variant='contained' color='secondary' startIcon={<CloudDownloadOutlined />} >
                         Export

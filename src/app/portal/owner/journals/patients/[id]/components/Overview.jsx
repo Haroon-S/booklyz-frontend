@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetBookingsQuery } from '@/services/private/bookings';
 import { useGetPatientsQuery } from '@/services/private/patients';
 import { useGetUserQuery } from '@/services/private/users';
 import { BadgeOutlined } from '@mui/icons-material'
@@ -13,7 +14,7 @@ const Overview = () => {
     const { id } = useParams();
     const { data: userData } = useGetUserQuery({ user: id });
 
-    const { social_security_number, email, mobile, user, address , username} = userData?.[0] || {};
+    const { social_security_number, email, mobile, user, address, username } = userData?.[0] || {};
 
     return (
         <Grid container>
@@ -40,13 +41,15 @@ const Overview = () => {
                 </Typography>
 
                 <Box display={'flex'} gap={2} mt={2}>
-                    <Button variant='contained' color='secondary'>
-                        Show latest
-                    </Button>
                     <Link href={`/portal/owner/journals/patients/${id}/journal?tab=tab1`}>
-                    <Button variant='contained' color='secondary'>
-                        Create new
-                    </Button>
+                        <Button variant='contained' color='secondary'>
+                            Show latest
+                        </Button>
+                    </Link>
+                    <Link href={`/portal/owner/journals/patients/${id}/journal?tab=tab1`}>
+                        <Button variant='contained' color='secondary'>
+                            Create new
+                        </Button>
                     </Link>
                 </Box>
 

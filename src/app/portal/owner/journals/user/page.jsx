@@ -23,17 +23,14 @@ import withTable from '@/HOC/withTable';
 import TableLoaders from '@/app/common/loaders/TableLoaders';
 import EmptyRecordTable from '@/app/common/components/EmptyRecordTable';
 import { useGetJournalsQuery } from '@/services/private/journals';
-// import ModalHeader from '@/app/common/components/ModalHeader';
-// import { formModalStyles } from '@/styles/mui/common/modal-styles';
-// import AddEditJournalForm from './form/AddEditJournalForm';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useGetPatientsQuery } from '@/services/private/patients';
-import LogHistoryHead from './components/LogHistoryHead';
-import { patientsTableHeadCells } from './utilities/data';
+import UsersHead from './components/UsersHead';
+import { userTableHeadCells } from './utilities/data';
 import { useGetUserLogsHistoryQuery } from '@/services/private/users';
+import { useAuthorizedQuery } from '@/services/private/auth';
 
-function PatientsTable({
+function UserTable({
     pagination,
     sorting,
     onPageChange,
@@ -46,6 +43,10 @@ function PatientsTable({
  
 
     const router = useRouter();
+
+    const {data: meUserData} = useAuthorizedQuery();
+
+    console.log('meUserData ==> ', meUserData)
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [isAddModalOpen, setAddModalOpen] = useState(false);
@@ -76,56 +77,59 @@ function PatientsTable({
         <>
             <TableContainer component={Paper} className='w-100'>
                 <Table className='w-100'>
-                    <LogHistoryHead
-                        headings={patientsTableHeadCells}
+                    <UsersHead
+                        headings={userTableHeadCells}
                         order={order}
                         orderBy={orderBy}
                         onRequestSort={onRequestSort}
-                        rowCount={userLogHistory?.count || 0}
+                        rowCount={1}
                         numSelected={selected?.length}
-                        onSelectAllRows={e => onSelectAllRows(e, userLogHistory?.results)}
+                        onSelectAllRows={e => onSelectAllRows(e, [meUserData])}
                     />
 
                     {loading && <TableLoaders />}
 
-                    {!loading && userLogHistory?.results?.length > 0 && (
+                    {!loading && [meUserData]?.length > 0 && (
                         <TableBody>
-                            {userLogHistory?.results?.map(item => {
-                                const isItemSelected = isSelected(item?.id);
+                            {[meUserData]?.map(item => {
+                                const isItemSelected = isSelected(item?.profile?.id);
 
                                 return (
                                     <TableRow
                                         hover
                                         selected={isItemSelected}
                                         className="cursor-pointer"
-                                        key={item?.id}
+                                        key={item?.profile?.id}
                                     >
                                         <TableCell>
-                                            <Typography variant="body1">{moment(item?.created_at).format("DD MMM YYYY hh:mm A")}</Typography>
+                                            <Typography variant="body1">{item?.profile?.id}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="body1">{item?.ip_address || "--"}</Typography>
+                                            <Typography variant="body1">{item?.profile?.first_name || "--"}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="body1">{item?.activity || "--"}</Typography>
+                                            <Typography variant="body1">{item?.profile?.last_name || "--"}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="body1">{item?.user || "--"}</Typography>
+                                            <Typography variant="body1">{item?.profile?.email || "--"}</Typography>
                                         </TableCell>
                                         <TableCell>
-                                            <Typography variant="body1">{item?.person || "--"}</Typography>
+                                            <Typography variant="body1">{item?.profile?.mobile || "--"}</Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="body1">{item?.profile?.rights || "--"}</Typography>
                                         </TableCell>
                                     </TableRow>
                                 );
                             })}
                         </TableBody>
                     )}
-                    {!loading && userLogHistory?.results?.length === 0 && <EmptyRecordTable colSpan={7} />}
+                    {!loading && [meUserData]?.length === 0 && <EmptyRecordTable colSpan={7} />}
                 </Table>
 
                 <TablePagination
                     component={Box}
-                    count={userLogHistory?.count || 0}
+                    count={1}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     rowsPerPageOptions={[10, 20, 30]}
@@ -137,7 +141,7 @@ function PatientsTable({
     );
 }
 
-PatientsTable.propTypes = {
+UserTable.propTypes = {
     pagination: PropTypes.object.isRequired,
     sorting: PropTypes.object.isRequired,
     journalId: PropTypes.number.isRequired,
@@ -148,4 +152,4 @@ PatientsTable.propTypes = {
     onSelectAllRows: PropTypes.func.isRequired,
 };
 
-export default withTable(PatientsTable, { sortBy: 'id' });
+export default withTable(UserTable, { sortBy: 'id' });

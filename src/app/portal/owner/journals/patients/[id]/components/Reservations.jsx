@@ -1,8 +1,19 @@
+'use client';
+
+import { useGetBookingsQuery } from '@/services/private/bookings'
 import { AutoStoriesOutlined } from '@mui/icons-material'
 import { Box, Button, Grid, Stack, Typography } from '@mui/material'
+import moment from 'moment';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import React from 'react'
 
 const Reservations = () => {
+    const { id } = useParams();
+
+    const { data: previousBookingsData } = useGetBookingsQuery({ previous_date_booking: moment(new Date()).format('YYYY-MM-DD') })
+    const { data: upcomingBookingsData } = useGetBookingsQuery({ upcoming_date_booking: moment(new Date()).format('YYYY-MM-DD') })
+
     return (
         <>
             <Grid container p={4} height={'100%'}>
@@ -24,18 +35,33 @@ const Reservations = () => {
                     </Box>
 
                     <Stack spacing={2} mt={2}>
-                        <Box sx={{ borderRadius: '15px', backgroundColor: '#f5f6f8' }} padding={4} display={'flex'} justifyContent={'space-between'}>
+                        {
+                            previousBookingsData?.results?.length > 0 ? (
+                                previousBookingsData.results.slice(0, 5).map((item) => (
+                                    <Box sx={{ borderRadius: '15px', backgroundColor: '#f5f6f8' }} key={item.id} padding={4} display={'flex'} justifyContent={'space-between'}>
 
-                            <Stack>
-                                <Typography variant='body2' style={{ color: '#66737f' }}><b style={{ color: '#50b8a7' }}>Esmail Abasian</b> #805509 </Typography>
-                                <Typography variant='body2' style={{ color: '#66737f' }}>25 dec. 2024, 10:21 </Typography>
-                            </Stack>
+                                        <Stack>
+                                            <Typography variant='body2' style={{ color: '#66737f' }}><b style={{ color: '#50b8a7' }}>{item?.user_first_name} {item?.user_last_name}</b> #{item.id} </Typography>
+                                            <Typography variant='body2' style={{ color: '#66737f' }}>{moment(item.booking_date).format('DD MMM YYYY, HH:MM')}</Typography>
+                                        </Stack>
 
-                            <Button variant='contained'>
-                                View draft
-                            </Button>
+                                        <Link href={`/portal/owner/journals/patients/${id}/journal/${item.id}/?tab=tab1`}>
+                                            <Button variant='contained'>
+                                                View draft
+                                            </Button>
+                                        </Link>
 
-                        </Box>
+                                    </Box>
+                                ))
+                            ) : (
+                                <Box sx={{ width: '100%', minHeight: '300px', display:'flex', justifyContent:'center', alignItems:'center'  }}>
+                                    <Typography>
+                                        Data not found
+                                    </Typography>
+                                </Box>
+                            )
+                        }
+
                     </Stack>
                 </Grid>
                 <Grid item xl={6} lg={6} md={6} borderLeft={1} paddingLeft={4}>
@@ -54,6 +80,36 @@ const Reservations = () => {
                         </Stack>
 
                     </Box>
+
+                    <Stack spacing={2} mt={2}>
+                        {
+                            upcomingBookingsData?.results?.length > 0 ? (
+                                upcomingBookingsData.results.slice(0, 5).map((item) => (
+                                    <Box sx={{ borderRadius: '15px', backgroundColor: '#f5f6f8' }} key={item.id} padding={4} display={'flex'} justifyContent={'space-between'}>
+
+                                        <Stack>
+                                            <Typography variant='body2' style={{ color: '#66737f' }}><b style={{ color: '#50b8a7' }}>{item?.user_first_name} {item?.user_last_name}</b> #{item.id} </Typography>
+                                            <Typography variant='body2' style={{ color: '#66737f' }}>{moment(item.booking_date).format('DD MMM YYYY, HH:MM')}</Typography>
+                                        </Stack>
+
+                                        <Link href={`/portal/owner/journals/patients/${id}/journal/${item.id}/?tab=tab1`}>
+                                            <Button variant='contained'>
+                                                Journal entry
+                                            </Button>
+                                        </Link>
+
+                                    </Box>
+                                ))
+                            ) : (
+                                <Box sx={{ width: '100%', minHeight: '300px', display:'flex', justifyContent:'center', alignItems:'center' }}>
+                                    <Typography>
+                                        Data not found
+                                    </Typography>
+                                </Box>
+                            )
+                        }
+
+                    </Stack>
                 </Grid>
             </Grid>
         </>

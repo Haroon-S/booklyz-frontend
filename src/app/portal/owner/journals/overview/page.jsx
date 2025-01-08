@@ -1,14 +1,28 @@
 'use client';
 
+import { useGetBookingsQuery } from '@/services/private/bookings';
 import { useGetJournalsQuery } from '@/services/private/journals';
 import { Box, Button, Grid, List, ListItem, Modal, Paper, Stack, Typography, useTheme } from '@mui/material';
 import moment from 'moment';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import propTypes from 'prop-types';
 import React from 'react';
 
 function Journals({ searchParams }) {
 
+  const { id } = useParams();
+
   const { data: journalsListData } = useGetJournalsQuery({});
+  const { data: bookingsData } = useGetBookingsQuery();
+
+
+  const today = moment().format("YYYY-MM-DD");
+
+  // Filter records based on today's date
+  const filteredRecords = bookingsData?.results?.filter(record => moment(record.date).isSame(today, 'day'));
+
+  console.log('bookingsData  ==> ', bookingsData)
 
   console.log('journalsListData ==> ', journalsListData)
 
@@ -62,7 +76,35 @@ function Journals({ searchParams }) {
               <Typography variant='h5'>
                 Bookings
               </Typography>
+              <Stack spacing={1} mt={3}>
 
+                {
+                  filteredRecords?.length > 0 ? (
+                    filteredRecords?.slice(0, 3)?.map(item => (<Box sx={{ borderRadius: '15px', backgroundColor: '#f5f6f8' }} padding={4} display={'flex'} justifyContent={'space-between'}>
+
+                      <Stack>
+                        <Typography variant='body2' style={{ color: '#66737f' }}><b style={{ color: '#50b8a7' }}>{item?.contact_name}</b> #805509 </Typography>
+                        <Typography variant='body2' style={{ color: '#66737f' }}>{moment(item?.date).format('DD MMM YYYY')}</Typography>
+                      </Stack>
+
+                      <Link href={`/portal/owner/journals/patients/${id}/journal/${item.id}/?tab=tab1`}>
+                        <Button variant='contained'>
+                          Journal entry
+                        </Button>
+                      </Link>
+                      {/* <Button variant='contained'>
+                        Jounal entry
+                      </Button> */}
+
+                    </Box>))
+                  ) : (
+                    <Typography variant='h3'>
+                      No data found
+                    </Typography>
+                  )
+                }
+
+              </Stack>
             </Paper>
           </Stack>
         </Grid>

@@ -1,8 +1,22 @@
+'use client';
+
+import { useAuthorizedQuery } from '@/services/private/auth';
+import { useGetOwnersQuery } from '@/services/private/journals';
+import { useGetUserQuery } from '@/services/private/users';
 import { BadgeOutlined } from '@mui/icons-material'
 import { Avatar, Box, Button, Divider, Grid, Stack, Typography } from '@mui/material'
+import { useParams } from 'next/navigation';
 import React from 'react'
 
 const PersonalData = () => {
+
+    const { id } = useParams();
+
+    const { data: meUserData } = useAuthorizedQuery();
+    const { data: userProfileData } = useGetOwnersQuery({ user: id })
+
+    const { social_security_number, family, email, mobile, id: userId, zip_code, address } = userProfileData?.[0] || {};
+
     return (
         <Grid container>
             <Grid item xl={6} lg={6} md={6} sm={12} xs={12}>
@@ -12,15 +26,13 @@ const PersonalData = () => {
                             <BadgeOutlined />  <Typography variant='h5' fontWeight={400} fontSize={'24px'}>Journal entries</Typography>
                         </Box>
 
-                        <Button size='small' variant='contained'>
+                        {/* <Button size='small' variant='contained'>
                             Change
-                        </Button>
+                        </Button> */}
                     </Box>
 
-                    <DataRow label={'Test'} value={'Test'} />
-                    <DataRow label={'Test'} value={'Test'} />
-                    <DataRow label={'Test'} value={'Test'} />
-                    <DataRow label={'Test'} value={'Test'} />
+                    <DataRow label={'Social security number '} value={social_security_number} />
+                    <DataRow label={'Relative'} value={family} />
 
                 </Stack>
             </Grid>
@@ -31,10 +43,8 @@ const PersonalData = () => {
                 </Box>
                 <Typography variant='body2'>Users who made the patient their own. (Has access to personal data and journal) </Typography>
 
-
-
                 <Box display={'flex'} gap={2} mt={2} px={2} py={1} alignItems={'center'} bgcolor={'#f5f6f8'}>
-                    <Avatar>H</Avatar> <Typography variant='body1' fontSize={'18px'}>Pamela Sanatgari </Typography>
+                    <Avatar>{meUserData?.username?.[0]}</Avatar> <Typography variant='body1' fontSize={'18px'}>{meUserData?.username}</Typography>
                 </Box>
 
                 <Divider />
@@ -44,11 +54,11 @@ const PersonalData = () => {
                 </Box>
 
                 <Box mt={2} px={2} py={1} alignItems={'center'} bgcolor={'#f5f6f8'}>
-                    <LabelValue label={'test'} value={'test'} />
-                    <LabelValue label={'test'} value={'test'} />
-                    <LabelValue label={'test'} value={'test'} />
-                    <LabelValue label={'test'} value={'test'} />
-                    <LabelValue label={'test'} value={'test'} />
+                    <LabelValue label={'E-Post'} value={email} />
+                    <LabelValue label={'Mobile'} value={mobile} />
+                    <LabelValue label={'Id'} value={userId} />
+                    <LabelValue label={'Postal code'} value={zip_code} />
+                    <LabelValue label={'Address'} value={address} />
                 </Box>
 
             </Grid>
