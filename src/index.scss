@@ -193,3 +193,8 @@ iframe.skiptranslate {
   font-size: inherit !important;
   font-family: inherit !important;
 }
+
+/* Include this in your styles/global.css or component-specific styles */
+.ck-editor__editable_inline {
+  min-height: 200px;
+}

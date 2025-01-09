@@ -75,7 +75,7 @@ export const sidebarCommonItemsData = [
   },
   {
     id: v4(),
-    path: '/portal/owner/journals',
+    path: '/portal/owner/journals/overview',
     title: 'Journals',
     icon: <Article />,
     order: 6,
