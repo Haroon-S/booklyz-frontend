@@ -33,8 +33,8 @@ const layout = ({ children }) => {
         },
         {
             id: 5,
-            link: '/portal/owner/journals/templates',
-            title: 'Templates',
+            link: '/portal/owner/journals/setting',
+            title: 'Setting',
         },
         {
             id: 6,
