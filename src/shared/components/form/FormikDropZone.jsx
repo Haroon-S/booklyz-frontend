@@ -67,7 +67,7 @@ function FormikDropZone({ name, onChange = () => {}, src = '', multiple = false 
         <Dropzone
           multiple={multiple}
           maxFiles={3}
-          accept={{ 'image/png': ['.png'], 'image/jpeg': ['.jpeg'], 'image/jpg': ['.jpg'] }}
+          // accept={{ 'image/png': ['.png'], 'image/jpeg': ['.jpeg'], 'image/jpg': ['.jpg'], '' }}
           onDrop={handleDropFiles}
           onDropRejected={handleDropReject}
         >
