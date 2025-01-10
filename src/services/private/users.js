@@ -10,6 +10,22 @@ export const usersApi = privateAPi.injectEndpoints({
       }),
       providesTags: ['GetUser'],
     }),
+    addUserProfileFiles: build.mutation({
+      query: body => ({
+        url: '/user-profile/patient-files/',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['GetUserFiles'],
+    }),
+    getUserProfileFiles: build.query({
+      query: params => ({
+        url: '/user-profile/patient-files/',
+        method: 'GET',
+        params,
+      }),
+      providesTags: ['GetUserFiles'],
+    }),
     getUserLogsHistory: build.query({
       query: params => ({
         url: '/user/log-history/',
@@ -42,4 +58,6 @@ export const usersApi = privateAPi.injectEndpoints({
   }),
 });
 
-export const { useGetUserQuery, useAddUserMutation, useGetUserByIdQuery, useAddContactMutation, useGetUserLogsHistoryQuery } = usersApi;
+export const { useGetUserQuery, useAddUserMutation, useGetUserByIdQuery,
+  useAddContactMutation, useGetUserLogsHistoryQuery, useAddUserProfileFilesMutation,
+  useGetUserProfileFilesQuery } = usersApi;
